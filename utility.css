@@ -1,0 +1,58 @@
+.border {
+    border: 2px solid black;
+    margin: 2px;
+}
+.flex {
+    display: flex;
+}
+.justify-center {
+    justify-content: center;
+}
+.item-center {
+    align-items: center;
+}
+.bg-black{
+    background-color: black;
+}
+.invert{
+    filter: invert(1);
+}
+.bg-grey{
+    background-color: #121212;
+    color: white;
+}
+.rounded{
+    border-radius: 7px;
+}
+.m2{
+    margin: 5px;
+}
+.text-white {
+    color: #ffffff;}
+.p1{
+    padding: 10px;
+}
+.m3{
+    margin: 16px 0;
+}
+/* 1. Target the overall scrollbar area (the width) */
+::-webkit-scrollbar {
+    width: 8px;  /* Vertical scrollbar width */
+    height: 8px; /* Horizontal scrollbar height */
+}
+
+/* 2. Target the Track (the background area behind the draggable bar) */
+::-webkit-scrollbar-track {
+    background: #121212; /* Dark charcoal black (Spotify's main background color) */
+}
+
+/* 3. Target the Thumb (the actual draggable bar) */
+::-webkit-scrollbar-thumb {
+    background: #282828; /* Slightly lighter gray-black so it's visible */
+    border-radius: 4px;  /* Makes the scrollbar capsule rounded instead of square */
+}
+
+/* 4. Change the color of the thumb slightly when you hover over it */
+::-webkit-scrollbar-thumb:hover {
+    background: #3e3e3e; /* Lighter gray on hover, just like the real app */
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="utility.css">
+    <title>Spotify</title>
+</head>
+
+<body>
+    <div class="container flex">
+        <div class="left border bg-black">
+            <div class="cross">
+                <img class="invert" src="assets/cross.svg" alt="">
+            </div>
+            <div class="home bg-grey rounded m2 p1">
+                <div class="logo flex item-center">
+                    <img class="invert" src="assets/logo.svg" alt="logo">spotify
+                </div>
+                <ul>
+                    <li><img class="invert text-white" src="assets/home.svg" alt="home">home</li>
+                    <li><img class="invert" src="assets/search.svg" alt="search">search</li>
+                </ul>
+            </div>
+            <div class="library bg-grey rounded m2 p1">
+                <div>
+                    <h2>Your Library</h2>
+                </div>
+                <div class="songlist">
+                    <ul>
+                        
+                    </ul>
+                </div>
+                <div class="footer">
+                    <div><a href="https://www.spotify.com/in-en/legal/"><span>Legal</span></a></div>
+                    <div><a href="https://www.spotify.com/in-en/safetyandprivacy/"><span>Safety
+                            </span></a></div>
+                    <div><a href="https://www.spotify.com/in-en/legal/privacy-policy/"><span>Privacy Policy</span></a>
+                    </div>
+                    <div><a href="https://www.spotify.com/in-en/legal/cookies-policy/"><span>Cookies</span></a></div>
+                    <div><a href="https://www.spotify.com/in-en/legal/privacy-policy/#s3"><span>About Ads</span></a>
+                    </div>
+                    <div><a href="https://www.spotify.com/in-en/accessibility/"><span>Accessibility</span></a></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="right border bg-grey rounded  m3">
+            <div class="header">
+                <div class="nav">
+                <div class="hamburgercontainer">
+                        <img class="invert hamburger" src="assets/hamburger.svg" alt="">
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" />
+                    </svg>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12H19M19 12L12 5M19 12L12 19" />
+                    </svg>
+                    </div>
+                </div>
+                <div class="button">
+                    <button class="signbtn">Signup</button>
+                    <button class="loginbtn">Login</button>
+                </div>
+            </div>
+            <div class="playlist">
+                <h1>Spotify Playlist</h1>
+                
+                <div class="cardContainer">
+                </div>
+                
+                <div class="playbar">
+                    <div class="seekbar">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="liiii">
+                    <div class="songinfo"></div>
+                    <div class="playbutton">
+                        <span id="previous"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28">
+                            <path d="M6 5v14h2V5H6zm11.5 0L8.5 12l9 7V5z" fill="#FFFFFF" />
+                        </svg></span>
+                        <img id="play" src="assets/play.svg" alt="">
+                        <span id="next"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28">
+                            <path d="M6 19l9-7-9-7v14zm10-14v14h2V5h-2z" fill="#FFFFFF" />
+                        </svg></span>
+                    </div>
+                    <div class="songtime"></div></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
