@@ -148,25 +148,23 @@ async function main() {
 
     // FIXED: Decodes the URL correctly so it matches strings perfectly inside the songs array
     document.querySelector("#previous").addEventListener("click", () => {
-        let currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
-        let decodedSongs = songs.map(song => decodeURIComponent(song));
-        let index = decodedSongs.indexOf(currentFilename);
-        
-        if ((index - 1) >= 0) {
-            playmusic(songs[index - 1]);
-        }
-    });
+    let currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
+    let index = songs.findIndex(song => decodeURIComponent(song) === currentFilename);
+    
+    if (index > 0) {
+        playmusic(songs[index - 1]);
+    }
+});
 
-    // FIXED: Decodes the URL correctly so it matches strings perfectly inside the songs array
-    document.querySelector("#next").addEventListener("click", () => {
-        let currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
-        let decodedSongs = songs.map(song => decodeURIComponent(song));
-        let index = decodedSongs.indexOf(currentFilename);
-        
-        if (index !== -1 && (index + 1) < songs.length) {
-            playmusic(songs[index + 1]);
-        }
-    });
+document.querySelector("#next").addEventListener("click", () => {
+    let currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
+    let index = songs.findIndex(song => decodeURIComponent(song) === currentFilename);
+    
+    if (index !== -1 && (index + 1) < songs.length) {
+        playmusic(songs[index + 1]);
+    }
+});
+    
 }
 
 main();
