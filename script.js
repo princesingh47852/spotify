@@ -17,15 +17,13 @@ function formatSeconds(seconds) {
 async function getSongs(folder) {
     currfolder = folder;
 
-    // FIX 1: Removed double slash (// → /) in GitHub API URL
-    // FIX 2: Added your GitHub username and repo — replace with your actual values
+    // NOTE: Ensure YOUR_USERNAME and YOUR_REPO are replaced correctly
     let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs/${folder}`);
     let response = await a.json();
 
-    // FIX 3: Guard — if GitHub returns an error object (not an array), bail out gracefully
     if (!Array.isArray(response)) {
         console.error("Could not load folder:", folder, response.message || response);
-        return;
+        return [];
     }
 
     songs = [];
@@ -56,7 +54,6 @@ async function getSongs(folder) {
         </li>`;
     }
 
-    // FIX 4: Use data-track attribute directly (avoids any URL encoding mismatch)
     Array.from(document.querySelector(".songlist").getElementsByTagName("li")).forEach(e => {
         e.addEventListener("click", () => {
             playmusic(e.getAttribute("data-track"));
@@ -67,6 +64,7 @@ async function getSongs(folder) {
 }
 
 const playmusic = (track, pause = false) => {
+    // Setting src cleanly
     currentsong.src = `./songs/${currfolder}/` + track;
 
     if (!pause) {
@@ -74,17 +72,14 @@ const playmusic = (track, pause = false) => {
         document.querySelector("#play").src = "assets/pause.svg";
     }
 
-    // FIX 5: Use decodeURIComponent for clean display instead of manual replaceAll
     document.querySelector(".songinfo").innerHTML = decodeURIComponent(track).replace(".mp3", "");
     document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
 }
 
 async function displayFolders() {
-    // FIX 1 (same): Single slash in GitHub API URL + added repo path
     let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs`);
     let response = await a.json();
 
-    // FIX 3: Guard for API error
     if (!Array.isArray(response)) {
         console.error("Could not load songs directory:", response.message || response);
         return;
@@ -116,24 +111,31 @@ async function displayFolders() {
 
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener("click", async item => {
-            await getSongs(item.currentTarget.dataset.folder);
+            let folder = item.currentTarget.dataset.folder;
+            let folderSongs = await getSongs(folder);
+            if(folderSongs && folderSongs.length > 0){
+                playmusic(folderSongs[0]); // Auto-play first song when folder is clicked
+            }
             document.querySelector(".left").style.left = "0";
         });
     });
 }
 
-// FIX 6: Extracted helper to get current song index — used by both prev/next
+// FIXED: Robust index retrieval by using URL decoding on both sides
 function getCurrentIndex() {
-    // Compare decoded filenames to handle any URL encoding differences
-    const currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
-    return songs.findIndex(song => decodeURIComponent(song) === currentFilename);
+    if (!currentsong.src) return -1;
+    
+    // Get the last segment of the current source URL and decode it
+    const currentSrcSegments = currentsong.src.split("/");
+    const currentFilename = decodeURIComponent(currentSrcSegments[currentSrcSegments.length - 1]);
+
+    return songs.findIndex(song => {
+        return decodeURIComponent(song) === currentFilename;
+    });
 }
 
 async function main() {
     await displayFolders();
-
-    // FIX 7: Only call getSongs if folders loaded; pick first folder dynamically
-    // Replace 'np' with your actual default folder name, or leave as-is if 'np' exists
     await getSongs(`np`);
 
     let playBtn = document.querySelector("#play");
@@ -156,13 +158,12 @@ async function main() {
         }
     });
 
-    // FIX 8: Reset play button icon when song finishes + auto-advance to next
+    // Auto-advance logic
     currentsong.addEventListener("ended", () => {
         let index = getCurrentIndex();
         if (index !== -1 && (index + 1) < songs.length) {
             playmusic(songs[index + 1]);
         } else {
-            // End of playlist — reset button to play icon
             document.querySelector("#play").src = "assets/play.svg";
             document.querySelector(".circle").style.left = "0%";
         }
@@ -187,7 +188,7 @@ async function main() {
         document.querySelector(".left").style.left = "-100%";
     });
 
-    // FIX 9: Previous — use shared getCurrentIndex() helper, no decoding bugs
+    // FIXED: Previous button logic
     document.querySelector("#previous").addEventListener("click", () => {
         let index = getCurrentIndex();
         if (index > 0) {
@@ -195,7 +196,7 @@ async function main() {
         }
     });
 
-    // FIX 9: Next — same fix
+    // FIXED: Next button logic
     document.querySelector("#next").addEventListener("click", () => {
         let index = getCurrentIndex();
         if (index !== -1 && (index + 1) < songs.length) {
