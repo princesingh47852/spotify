@@ -17,7 +17,7 @@ function formatSeconds(seconds) {
 async function getSongs(folder) {
     currfolder = folder;
     // FIXED: Ensured URL matches your local Live Server structure accurately
-    let a = await fetch(`/songs/${folder}/`);
+    let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs/${folder}`);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -71,7 +71,7 @@ const playmusic = (track) => {
 }
 
 async function displayFolders() {
-    let a = await fetch(`/songs/`);
+    let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs/`);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
