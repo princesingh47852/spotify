@@ -16,9 +16,9 @@ function formatSeconds(seconds) {
 
 async function getSongs(folder) {
     currfolder = folder;
-    
 
-    let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs/${folder}`);
+    // NOTE: Make sure to add your GitHub username and repo name in the URL below if not done!
+    let a = await fetch(`https://api.github.com/princesingh47852/spotify/contents/songs/${folder}`);
     let response = await a.json(); 
     
     songs = []; 
@@ -57,7 +57,6 @@ async function getSongs(folder) {
 }
 
 const playmusic = (track) => {
-    
     currentsong.src = `./songs/${currfolder}/` + track;
     currentsong.play().catch(err => console.log("Playback failed/interrupted:", err));
     
@@ -67,8 +66,7 @@ const playmusic = (track) => {
 }
 
 async function displayFolders() {
-
-    let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs`);
+    let a = await fetch(`https://api.github.com/princesingh47852/spotify/contents/songs`);
     let response = await a.json();
     let cardContainer = document.querySelector(".cardContainer");
     
@@ -127,10 +125,17 @@ async function main() {
         }
     });
 
+    // FIXED: Using getBoundingClientRect to ensure accurate seekbar clicking even if clicking the inner progress bar
     document.querySelector(".seekbar").addEventListener("click", e => {
-        let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
+        let rect = e.currentTarget.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left; 
+        let percent = (offsetX / rect.width) * 100;
+        
+        if (percent < 0) percent = 0;
+        if (percent > 100) percent = 100;
+
         document.querySelector(".circle").style.left = percent + "%";
-        currentsong.currentTime = ((currentsong.duration) * percent) / 100;
+        currentsong.currentTime = (currentsong.duration * percent) / 100;
     });
 
     document.querySelector(".hamburger").addEventListener("click", () => {
@@ -141,20 +146,24 @@ async function main() {
         document.querySelector(".left").style.left = "-100%";
     });
 
+    // FIXED: Decodes the URL correctly so it matches strings perfectly inside the songs array
     document.querySelector("#previous").addEventListener("click", () => {
-        let currentFilename = currentsong.src.split("/").slice(-1)[0];
-        let index = songs.indexOf(currentFilename);
+        let currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
+        let decodedSongs = songs.map(song => decodeURIComponent(song));
+        let index = decodedSongs.indexOf(currentFilename);
         
         if ((index - 1) >= 0) {
             playmusic(songs[index - 1]);
         }
     });
 
+    // FIXED: Decodes the URL correctly so it matches strings perfectly inside the songs array
     document.querySelector("#next").addEventListener("click", () => {
-        let currentFilename = currentsong.src.split("/").slice(-1)[0];
-        let index = songs.indexOf(currentFilename);
+        let currentFilename = decodeURIComponent(currentsong.src.split("/").slice(-1)[0]);
+        let decodedSongs = songs.map(song => decodeURIComponent(song));
+        let index = decodedSongs.indexOf(currentFilename);
         
-        if ((index + 1) < songs.length) {
+        if (index !== -1 && (index + 1) < songs.length) {
             playmusic(songs[index + 1]);
         }
     });
