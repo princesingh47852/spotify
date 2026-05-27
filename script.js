@@ -17,12 +17,11 @@ function formatSeconds(seconds) {
 async function getSongs(folder) {
     currfolder = folder;
     
-    // REPLACED: Fetching folder files from GitHub API instead of local screen scraping
+
     let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs/${folder}`);
-    let response = await a.json(); // GitHub API sends back clean JSON data!
+    let response = await a.json(); 
     
     songs = []; 
-    // REPLACED: Loop over the JSON array elements instead of HTML anchor tags
     for (let index = 0; index < response.length; index++) {
         const element = response[index];
         if (element.name.endsWith(".mp3")) {
@@ -58,8 +57,8 @@ async function getSongs(folder) {
 }
 
 const playmusic = (track) => {
-    // FIXED: Keeps the path local relative to your deployed site root for playback streaming
-    currentsong.src = `/songs/${currfolder}/` + track;
+    
+    currentsong.src = `./songs/${currfolder}/` + track;
     currentsong.play().catch(err => console.log("Playback failed/interrupted:", err));
     
     document.querySelector("#play").src = "assets/pause.svg";
@@ -68,18 +67,17 @@ const playmusic = (track) => {
 }
 
 async function displayFolders() {
-    // REPLACED: Fetching the folders from GitHub API instead of local screen scraping
+
     let a = await fetch(`https://api.github.com/repos/princesingh47852/spotify/contents/songs`);
     let response = await a.json();
     let cardContainer = document.querySelector(".cardContainer");
     
     cardContainer.innerHTML = ""; 
     
-    // REPLACED: Processing API JSON array data elements directly
     for (let index = 0; index < response.length; index++) {
         const e = response[index];
         
-        if (e.type === "dir") { // Check if the item in the repository is a directory/folder
+        if (e.type === "dir") { 
             let folder = e.name;
             
             cardContainer.innerHTML = cardContainer.innerHTML + `
@@ -92,7 +90,7 @@ async function displayFolders() {
                                 fill="#000000" />
                         </svg>
                     </div>
-                    <img src="/songs/${folder}/cover.jpg" alt="cover">
+                    <img src="./songs/${folder}/cover.jpg" alt="cover">
                     <h4>${folder}</h4>
                     <p>Playlist</p>
                 </div>`;
